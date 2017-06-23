@@ -21,8 +21,8 @@
 // @match           https://*.the-west.sk/game.php*
 // @match           https://*.the-west.fr/game.php*
 // @match           https://*.the-west.it/game.php*
-// @downloadURL     https://xshteff.github.io/TWInterfacer/scriptuser.js
-// @updateURL       https://xshteff.github.io/TWKappa/twkappa.user.js
+// @downloadURL     https://xshteff.github.io/TWInterfacer/twinterfacer.user.js
+// @updateURL       https://xshteff.github.io/TWInterfacer/twinterfacer.user.js
 // @grant           none
 // @run-at          document-end
 // ==/UserScript==
@@ -60,6 +60,35 @@ var TWInterfacer = {
         $('.char_links').css({
             'border-radius': '50%'
         }).append(charLWrap) /*.wrap("<div class='xsht_menu_item'></div>")*/ ;
+
+
+        //TW-DB stuff....
+        setTimeout(function () {
+            if (isDefined(window.TWDB)) {
+                console.log("TW-DB Detected! Enabling layout...")
+                if (TWDB.Settings.get('directsleep') || Settings.get("deposit")) {
+                    setTimeout(function () {
+                        $('#twdb_characbut').css('background', 'transparent');
+                        $('#twdb_characbut .char_links').css({
+                            'border-radius': '50%'
+                        }).append(charLWrap);
+                        $('#twdb_characbut .char_links:nth-child(1)').css({
+                            left: '-37px',
+                            top: '-147px',
+                        });
+                        $('#twdb_characbut .char_links:nth-child(2)').css({
+                            left: '-37px',
+                            top: '2px',
+                        });
+                        $('.energy_add').css({
+                            'top': '142px',
+                        });
+                    }, 1000); //It might take a while for these to get added and there's no event that triggers when it happens
+                }
+            }
+        }, 2500);
+
+
         $('#ui_character_container .character_link').css({
             'height': '144px',
             'top': '0px'
@@ -202,28 +231,30 @@ var TWInterfacer = {
         });
         $('#ui_character_container').before(donutcontainer);
     },
+    MiniMap: function () {
+        /*for (var i = 0; i < $('#mmap_layer_7_foreign_forts').children().length; i++) {
+            console.log($('#mmap_layer_7_foreign_forts:nth-child(' + i + ')').css('left'));
+        }
+        $.each($('.mmap_county_layer'), function (a) {
+            $.each($(this), function (b) {
+                var leftValue = parseInt($(this).css('left'));
+                $(this).css('left', (leftValue + 5) + "px")
+            });
+        });
+        $.each($('#mmap_layer_7_foreign_forts').children(), function (a, b) {
+            var leftValue = parseInt($(this).css('left'));
+            $(this).css('left', (leftValue + 5) + "px")
+        })*/
+    },
     Init: function () {
         TWInterfacer.HealthAndEnergy();
         TWInterfacer.Avatar();
         TWInterfacer.CharLinks();
-        TWInterfacer.Bars();
+        //TWInterfacer.Bars();
         TWInterfacer.NameAndLevel();
         TWInterfacer.SaloonBar();
     },
 }
-
-TWInterfacer.Init();
-
-/*for (var i = 0; i < $('#mmap_layer_7_foreign_forts').children().length; i++) {
-    console.log($('#mmap_layer_7_foreign_forts:nth-child(' + i + ')').css('left'));
-}
-$.each($('.mmap_county_layer'), function (a) {
-    $.each($(this), function (b) {
-        var leftValue = parseInt($(this).css('left'));
-        $(this).css('left', (leftValue + 5) + "px")
-    });
+$(document).ready(function () {
+    TWInterfacer.Init();
 });
-$.each($('#mmap_layer_7_foreign_forts').children(), function (a, b) {
-    var leftValue = parseInt($(this).css('left'));
-    $(this).css('left', (leftValue + 5) + "px")
-})*/
