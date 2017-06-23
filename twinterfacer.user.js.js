@@ -168,10 +168,10 @@ var TWInterfacer = {
         document.getElementById('ui_character_container').appendChild(parseSVG(svg));
 
         $('.donut').css({
-            'width': '210px',
-            'height': '210px',
-            'top': '-33px',
-            'left': '-33px',
+            'width': '200px',
+            'height': '200px',
+            'top': '-28px',
+            'left': '-28px',
             'position': 'absolute',
             'z-index': '-1'
         });
@@ -191,11 +191,16 @@ var TWInterfacer = {
         $('.energy_bar').hide();
         $('.health_bar').hide();
         $('.energy_add').css({
-            'top': '145px',
+            'top': '142px',
             'left': '72px',
             'bottom': 0
         });
-
+        var donutcontainer = $("<img>").attr('src', 'https://puu.sh/wsor7/24b1f4bf45.png').addClass('donutContainer').css({
+            position: 'absolute',
+            top: '-12px',
+            left: '-12px'
+        });
+        $('#ui_character_container').before(donutcontainer);
     },
     Init: function () {
         TWInterfacer.HealthAndEnergy();
