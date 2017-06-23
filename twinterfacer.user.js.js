@@ -150,15 +150,14 @@ var TWInterfacer = {
 
         var donutEnergy = (Character.energy / (Character.maxEnergy / 100)) / 2;
         var leftoverEnergy = 100 - donutEnergy;
-        console.log(donutEnergy + " " + leftoverEnergy);
 
         var donutHealth = (Character.health / Character.maxHealth) * 100 / 2;
         var healthLeftover = 100 - donutHealth;
         var egColor = "#174c84"
-        if(Character.maxEnergy === 150) {
+        if (Character.maxEnergy === 150) {
             egColor = "#46af31"
         }
-        console.log(donutHealth + " " + healthLeftover);
+
         var svg = '<svg width="150" height="150" viewBox="0 0 42 42" class="donut" style="transform:rotateX(180deg)">';
         svg += '<circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="transparent"></circle>';
         svg += '<circle class="donut-energy" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="' + egColor + '" stroke-width="2" stroke-dasharray="' + donutEnergy + ' ' + leftoverEnergy + '" stroke-dashoffset="25"></circle>';
@@ -167,6 +166,7 @@ var TWInterfacer = {
         svg += '<circle class="donut-health" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#ac140c" stroke-width="2" stroke-dasharray="' + donutHealth + ' ' + healthLeftover + '" stroke-dashoffset="25"></circle>';
         svg += '</svg>';
         document.getElementById('ui_character_container').appendChild(parseSVG(svg));
+
         $('.donut').css({
             'width': '210px',
             'height': '210px',
@@ -176,22 +176,17 @@ var TWInterfacer = {
             'z-index': '-1'
         });
 
-        var oldEneg = Character.setEnergy;
-        var oldHealth = Character.setHealth;
-        Character.setEnergy = function (e, energyDate) {
-            var donutEnergy = (e / (Character.maxEnergy / 100)) / 2;;
+        EventHandler.listen("energy", function (a, b) {
+            var donutEnergy = (a / (Character.maxEnergy / 100)) / 2;;
             var leftoverEnergy = 100 - donutEnergy;
-            console.log(donutEnergy + " " + leftoverEnergy);
             $('.donut-energy').attr('stroke-dasharray', donutEnergy + " " + leftoverEnergy);
-            return oldEneg(e, energyDate);
-        }
-        /*Character.setHealth = function (h, healthDate) {
-            var donHp = h / 2;
+        });
+
+        EventHandler.listen("health", function (a, b) {
+            var donHp = (a / (Character.maxHealth / 100)) / 2;;
             var leftHp = 100 - donHp;
-            console.log(donHp + " " + leftHp);
             $('.donut-health').attr('stroke-dasharray', donHp + " " + leftHp);
-            return oldHealth(h, healthDate);
-        }*/
+        });
 
         $('.energy_bar').hide();
         $('.health_bar').hide();
